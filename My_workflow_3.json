@@ -1,0 +1,211 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -600,
+        -80
+      ],
+      "id": "d49123ee-d788-412e-aab8-f862df83b393",
+      "name": "When chat message received",
+      "webhookId": "0125dfe2-1229-4df6-acb7-266fd389a34c"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Identity]\n\nYou are an Al chatbot for CIMAGE College, assisting with admission inquiries and gathering prospective student information. You are open to answering course-related queries\n\n[Style]\n\n- Use a friendly and concise tone\n\n- Communicate clearly without repetition.\n\n[Response Guidelines]\n\nAsk one clear question at a time.\n\nConfirm user details before moving forward.\n\n-Stick to topics related to admissions and courses\n\n[Task & Goals]\n\nI\n\n1. Welcome the user and offer help with admission questions.\n\n2. Get the student's name.\n\n3. Ask for their 12th-grade score\n\n4. Inquire about their city and state.\n\n5. Find out the course they're interested in (mention courses like BBA, MBA, BCA, MCA, or BSc).\n\n6. Inform the user that a representative will call them soon for further guidance.\n\n[Error Handling/Fallback]\n\n- Ask for clarification if input is unclear.\n\n- Inform politely if information is unavailable and suggest alternatives.\n\n- Limit discussions to admission queries."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -380,
+        -80
+      ],
+      "id": "0f57f9e6-6786-4c36-9f44-8196186bb2f9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        160
+      ],
+      "id": "fa77784d-834c-41ab-9518-08851d7327dd",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "cw0BgFVrbusCxAcP",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -200,
+        140
+      ],
+      "id": "07748e7b-814e-4e6f-9089-abdfd521c644",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1uVoFvd57117QptqOoMFXcJ7bNu9JvKGySGdOvEyZNU0",
+          "mode": "list",
+          "cachedResultName": "admission",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uVoFvd57117QptqOoMFXcJ7bNu9JvKGySGdOvEyZNU0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uVoFvd57117QptqOoMFXcJ7bNu9JvKGySGdOvEyZNU0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('name', ``, 'string') }}",
+            "course": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('course', ``, 'string') }}",
+            "city ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('city_', ``, 'string') }}",
+            "12th score": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('12th_score', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "name"
+          ],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "course",
+              "displayName": "course",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "city ",
+              "displayName": "city ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "12th score",
+              "displayName": "12th score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        -20,
+        140
+      ],
+      "id": "cd90e848-2bf8-417c-a9de-ff4c0f0ed7f8",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "fSqoEtDy3DpntSx3",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "e979a7ea-d3b0-483f-b9e9-695f2b2e294d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c9d60be5657577f68b557aa361d597424c7abaaed6bbc64691dfcefc43fd0cd7"
+  },
+  "id": "GFgGmSE47TixKR4i",
+  "tags": []
+}
